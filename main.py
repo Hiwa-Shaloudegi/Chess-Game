@@ -31,36 +31,14 @@ def draw_board(screen, board):
             else:
                 color = pygame.Color("gray")
 
-            pygame.draw.rect(screen, color, pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE)) ## WTF?
+            pygame.draw.rect(screen, color, pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE)) 
 
             # draw the pieces on the board
             piece = board[row][column]
             if piece != "--":
                 screen.blit(IMAGES[piece], pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE))
-
-
-
-
-# """
-# 1- draw the pieces on the board
-# """
-# def draw_pieces(screen, board):
-#     for row in range(DIMENSION):
-#         for column in range(DIMENSION):
-#             piece = board[row][column]
-#             if piece != "--":
-#                 screen.blit(IMAGES[piece], pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE))
-
-
-
-# """
-# 1- draw the graphics of the current game state
-# """
-# def draw_game_state(screen, game_state):
-#     draw_board(screen) 
-#     draw_pieces(screen, game_state.board)
-
-
+                
+                
 
 """
 1- initialize pygame
@@ -73,16 +51,65 @@ def main():
     gs = engine.GameState()
     load_images()
 
+
+    selected_sq = () # last click of the user (row, column)
+    clicks = []      #  [(row1, column1), (row2, column2)]
+
     running = True
     while running:
         for e in pygame.event.get():
+
             if e.type == pygame.QUIT:
                 running = False
+
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                position = pygame.mouse.get_pos() # (x, y)
+                column = position[0] // SQ_SIZE
+                row = position[1] // SQ_SIZE
+
+                if  selected_sq != (row, column):
+                    selected_sq = (row, column)
+                    clicks.append(selected_sq)
+                else:
+                    selected_sq = ()           # (row, column)
+                    clicks = []                # [(row1, column1), (row2, column2)]
+
+
+                if len(clicks) == 2:
+
+                    start_sq = clicks[0]
+                    end_sq = clicks[1]
+
+                    start_row = start_sq[0]
+                    start_column = start_sq[1]
+                    end_row = end_sq[0]        
+                    end_column = end_sq[1]     
+
+                    selected_piece = gs.board[start_row][start_column]
+                    captured_piece = gs.board[end_row][end_column]
+
+                    # move function
+                    gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+                    # reset user clicks
+                    selected_sq = () 
+                    clicks = []
+
+
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_z:
+                    gs.undo()
+        
+                    
+
+                    
 
         # draw_game_state(screen, game_state=gs)
         draw_board(screen, gs.board)
         clock.tick(MAX_FPS)
-        pygame.display.flip() # flip??
+        pygame.display.flip() # flip?? redrwas the display
+
+
         
 
 
