@@ -1,5 +1,7 @@
 import pygame
 import engine
+import pieces
+
 
 """
 BLOCK = 100  # size of one space (px)
@@ -89,7 +91,48 @@ def main():
                     captured_piece = gs.board[end_row][end_column]
 
                     # move function
-                    gs.move(start_sq, end_sq, selected_piece, captured_piece)
+                    if selected_piece[1] == 'K':
+                        king = pieces.King()
+                        if king.is_valid_move(start_sq, end_sq):
+                            gs.move(start_sq, end_sq, selected_piece, captured_piece)
+                    
+                    elif selected_piece[1] == 'Q':
+                        queen = pieces.Queen()
+                        if queen.is_valid_move(start_sq, end_sq):
+                            gs.move(start_sq, end_sq, selected_piece, captured_piece)
+                            # print(queen.get_all_possible_sq())
+
+
+                    elif selected_piece[1] == 'B':
+                        bishop = pieces.Bishop()
+                        if bishop.is_valid_move(start_sq, end_sq):
+                            gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+
+                    elif selected_piece[1] == 'N':
+                        knight = pieces.Knight()
+                        if knight.is_valid_move(start_sq, end_sq):
+                            gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+
+                    elif selected_piece[1] == 'R':
+                        rook = pieces.Rook()
+                        if rook.is_valid_move(start_sq, end_sq):
+                            gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+            
+                    elif selected_piece[1] == 'P':
+                        pawn = pieces.Pawn()
+                        color = selected_piece[0]
+                        if pawn.is_valid_move(start_sq, end_sq, color):
+                            gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+
+                    # else:
+                    #     gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+
+
 
                     # reset user clicks
                     selected_sq = () 
