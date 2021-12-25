@@ -1,4 +1,6 @@
+from typing import Dict
 import pygame
+from pygame.rect import Rect
 import engine
 import pieces
 
@@ -29,9 +31,9 @@ def draw_board(screen, board):
     for row in range(DIMENSION):
         for column in range(DIMENSION):
             if row%2 == 0 and column%2 == 0 or row%2 == 1 and column%2 == 1:
-                color = pygame.Color("white")
+                color = pygame.Color(240, 217, 181)
             else:
-                color = pygame.Color("gray")
+                color = pygame.Color(181, 136, 99)
 
             pygame.draw.rect(screen, color, pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE)) 
 
@@ -95,22 +97,33 @@ def main():
                         king = pieces.King()
                         if king.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
-                    
+
+
                     elif selected_piece[1] == 'Q':
                         queen = pieces.Queen()
                         if queen.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
                             # print(queen.get_all_possible_sq())
 
-
                     elif selected_piece[1] == 'B':
                         bishop = pieces.Bishop()
+
+                        all_possible_sq = bishop.get_all_possible_sq(start_sq, gs.board)
+                        print(all_possible_sq)
+
                         if bishop.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
 
                     elif selected_piece[1] == 'N':
                         knight = pieces.Knight()
+
+
+                        all_possible_sq = knight.get_all_possible_sq(start_sq, gs.board)
+                        print(all_possible_sq)
+                        # for sq in all_possible_sq:
+                        #     pygame.draw.rect(screen, "red", Rect(sq[1]*SQ_SIZE, sq[0]*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
                         if knight.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
@@ -140,8 +153,19 @@ def main():
 
 
             elif e.type == pygame.KEYDOWN:
+                # ctrl + z
                 if e.key == pygame.K_z:
                     gs.undo()
+                
+                # ctrl + y
+                elif e.key == pygame.K_y:
+                    gs.redo()
+
+                # ctrl + r
+                elif e.key == pygame.K_r:
+                    gs.reset()
+            
+            
         
                     
 

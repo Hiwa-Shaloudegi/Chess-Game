@@ -6,6 +6,16 @@ class Piece:
     def __init__(self):
         # self.posible_sqs = []
         pass
+        
+
+    # def get_all_possible_sq(self, start_sq, board):
+    #     for row in range(8):
+    #         for column in range(8):
+    #             piece = board[row][column]
+    #             if self.is_valid_move(start_sq, (row, column)) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
+    #                 self.all_possible_sq.append( (row, column) )
+
+    #     return self.all_possible_sq
 
 
     # def get_all_possible_sq(self, board, start_sq):
@@ -15,6 +25,8 @@ class Piece:
     #                 self.posible_sqs.append( (row, column) )
         
     #     return self.posible_sqs
+
+
 
 
 class King(Piece):
@@ -86,7 +98,8 @@ class Queen:
 class Bishop(Piece):
     def __init__(self):
         # self.type = 'B'
-        super().__init__()
+        # super().__init__()
+        self.all_possible_sq = []
 
     def is_valid_move(self, start_sq, end_sq):
     
@@ -104,11 +117,26 @@ class Bishop(Piece):
         return False
 
 
+        
+    # def get_all_possible_sq(self, start_sq, board):
+    #     for row in range(8):
+    #         for column in range(8):
+    #             piece = board[row][column]
+    #             if self.is_valid_move(start_sq, (row, column)) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
+    #                 self.all_possible_sq.append( (row, column) )
 
-class Knight:
+    #     return self.all_possible_sq
+
+
+        
+
+
+
+class Knight(Piece):
     def __init__(self):
         # self.type = 'N'  
         # super().__init__()
+        self.all_possible_sq = []
         pass
 
     def is_valid_move(self, start_sq, end_sq):
@@ -126,6 +154,16 @@ class Knight:
         return False
 
         
+    def get_all_possible_sq(self, start_sq, board):
+        for row in range(8):
+            for column in range(8):
+                piece = board[row][column]
+                if self.is_valid_move(start_sq, (row, column)) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
+                    self.all_possible_sq.append( (row, column) )
+
+        return self.all_possible_sq
+
+
 
 
 
