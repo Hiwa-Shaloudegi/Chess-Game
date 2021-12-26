@@ -19,8 +19,8 @@ class GameState: # class Game:
         ]
 
         self.white_turn = True
-        self.all_moves = []
         self.dead_pieces = []
+        self.all_moves = []
         self.undo_moves = []
 
 
@@ -34,11 +34,19 @@ class GameState: # class Game:
         if (self.white_turn and piece1[0] == 'w') or (not self.white_turn and piece1[0] == 'b'):
             
             if piece1[0] != piece2[0]:
-                self.board[start_row][start_column] = "--"
-                self.board[end_row][end_column] = piece1
 
-            if piece2 != "--":
-                self.dead_pieces.append(piece2)
+                
+                if piece1 == 'wP' and end_sq[0] == 0:   # pawn promotion move 
+                    self.board[0][end_sq[1]] = "wQ"
+                    self.board[start_sq[0]][start_sq[1]] = "--"
+
+                else:                                   # regular move
+                    self.board[start_row][start_column] = "--"
+                    self.board[end_row][end_column] = piece1
+
+
+                if piece2 != "--":
+                    self.dead_pieces.append(piece2)
 
             move_info = ()
             move_info = piece1[0], piece1, piece2, start_sq, end_sq   # move_info: ('w', 'wP', 'bN', (x1, y1), (x2, y2))
@@ -95,8 +103,8 @@ class GameState: # class Game:
 
         self.white_turn = True
         self.all_moves = []
-        self.dead_pieces = []
         self.undo_moves = []
+        self.dead_pieces = []
 
 
 
