@@ -34,15 +34,21 @@ class GameState: # class Game:
         if (self.white_turn and piece1[0] == 'w') or (not self.white_turn and piece1[0] == 'b'):
             
             if piece1[0] != piece2[0]:
-
                 
-                if piece1 == 'wP' and end_sq[0] == 0:   # pawn promotion move 
+                if piece1 == 'wP' and end_sq[0] == 0:   # white pawn promotion move 
                     self.board[0][end_sq[1]] = "wQ"
                     self.board[start_sq[0]][start_sq[1]] = "--"
+
+                    
+                elif piece1 == 'bP' and end_sq[0] == 7: # balck pawn promotion move
+                    self.board[7][end_sq[1]] = "bQ"
+                    self.board[start_sq[0]][start_sq[1]] = "--"
+            
 
                 else:                                   # regular move
                     self.board[start_row][start_column] = "--"
                     self.board[end_row][end_column] = piece1
+
 
 
                 if piece2 != "--":
