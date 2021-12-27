@@ -2,6 +2,8 @@
 1- Valid moves
 2- Storing all moves
 """
+from pieces import Piece
+
 
 class GameState: # class Game:
     def __init__(self):
@@ -17,6 +19,22 @@ class GameState: # class Game:
             ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']
             
         ]
+
+        self.piece_names = {
+            'P':'pawn',
+            'R':'rook',
+            'N':'knight',
+            'B':'bishop',
+            'Q':'queen',
+            'K':'king'
+        }
+        
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        self.square_names = dict()
+        for i in range(8):
+            for j in range(8):
+                self.square_names[(i, j)] = f"{letters[j]}{8 - i}"
+
 
         self.white_turn = True
         self.dead_pieces = []
@@ -58,9 +76,11 @@ class GameState: # class Game:
             move_info = piece1[0], piece1, piece2, start_sq, end_sq   # move_info: ('w', 'wP', 'bN', (x1, y1), (x2, y2))
             self.all_moves.append(move_info)
 
+            color = "white" if move_info[0] == 'w' else "black"
+            message = f"{color} {self.piece_names[move_info[1][1]]} moved from {self.square_names[move_info[3]]} to {self.square_names[move_info[4]]}"
+            print(message)
+
             self.white_turn = not self.white_turn
-
-
 
 
     def undo(self):
@@ -78,7 +98,6 @@ class GameState: # class Game:
             self.board[end_row][end_column] = last_move[2]
 
             self.white_turn = not self.white_turn
-
     
 
     def redo(self):

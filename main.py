@@ -12,7 +12,7 @@ WINDOW = BLOCK * 8  # size of board (px)
 WIDTH = HEIGHT = 512 
 DIMENSION = 8  # 8*8
 SQ_SIZE = HEIGHT // DIMENSION  
-MAX_FPS = 15 # FOR ANIMATIONS
+MAX_FPS = 20 # FOR ANIMATIONS
 IMAGES = {}
 
 
@@ -75,16 +75,9 @@ def draw_board(screen, game_state): #selected_sq
                 color = pygame.Color(240, 217, 181)
             else:
                 color = pygame.Color(181, 136, 99)
-
+            
+            # draw the board
             pygame.draw.rect(screen, color, pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE)) 
-
-
-            # if selected_sq[1] == "N":
-            #     knight = pieces.Knight()
-            #     all_possible_sq = knight.get_all_possible_sq(start_sq=(row, column), board=game_state.board)
-            #     highlight(screen, game_state, (row, column) , all_possible_sq)
-            #     print(all_possible_sq)
-
 
             # draw the pieces on the board
             piece = game_state.board[row][column]
@@ -94,7 +87,7 @@ def draw_board(screen, game_state): #selected_sq
 
 
 """
-Highlighting the all possible moves of the selected piece
+Highlighting all the possible moves of the selected piece
 """
 def highlight(screen, game_state, selected_sq, all_possible_sq):
     if selected_sq != ():
@@ -148,30 +141,8 @@ def main():
                 row = position[1] // SQ_SIZE
 
                 all_possible_sq = get_all_possible_sq(gs, (row, column))
-                print(all_possible_sq)
                 highlight(screen, gs, (row, column), all_possible_sq)
                 pygame.display.flip()
-
-
-                # if gs.board[row][column][1] == "N":
-                #     knight = pieces.Knight()
-                #     all_possible_sq = knight.get_all_possible_sq(start_sq=(row, column), board=gs.board)
-
-                #     highlight(screen, gs, (row, column) , all_possible_sq)
-                #     print(all_possible_sq)
-
-
-                    ####################### FUNCTION
-
-                    # for sq in all_possible_sq:
-                    #     print(sq)
-                    #     pygame.draw.rect(screen, "black", Rect(sq[1]*SQ_SIZE, sq[0]*SQ_SIZE, SQ_SIZE, SQ_SIZE))
-                    #     # clock.tick(300)
-
-                    #     pygame.display.update()
-
-                    ####################### END FUNCTION
-
 
 
                 if  selected_sq != (row, column):
@@ -203,7 +174,6 @@ def main():
                         if king.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
-
                     elif selected_piece[1] == 'Q':
                         queen = pieces.Queen()
                         if queen.is_valid_move(start_sq, end_sq):
@@ -214,25 +184,16 @@ def main():
                         if bishop.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
-
                     elif selected_piece[1] == 'N':
                         knight = pieces.Knight()
-
-                        # all_possible_sq = knight.get_all_possible_sq(start_sq, gs.board)
-                        # print(all_possible_sq)
-                        # for sq in all_possible_sq:
-                        #     pygame.draw.rect(screen, "red", Rect(sq[1]*SQ_SIZE, sq[0]*SQ_SIZE, SQ_SIZE, SQ_SIZE))
-
                         if knight.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
-
 
                     elif selected_piece[1] == 'R':
                         rook = pieces.Rook()
                         if rook.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
-            
                     elif selected_piece[1] == 'P':
                         pawn = pieces.Pawn()
                         color = selected_piece[0]
