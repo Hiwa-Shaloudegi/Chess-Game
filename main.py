@@ -79,6 +79,8 @@ def draw_board(screen, game_state): #selected_sq
             # draw the board
             pygame.draw.rect(screen, color, pygame.Rect(column*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE)) 
 
+            # highlight(screen, game_state, selected_sq=, all_possible_sq=)
+
             # draw the pieces on the board
             piece = game_state.board[row][column]
             if piece != "--":
@@ -176,7 +178,7 @@ def main():
 
                     elif selected_piece[1] == 'Q':
                         queen = pieces.Queen()
-                        if queen.is_valid_move(start_sq, end_sq):
+                        if queen.is_valid_move(start_sq, end_sq, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
                     elif selected_piece[1] == 'B':
@@ -191,7 +193,7 @@ def main():
 
                     elif selected_piece[1] == 'R':
                         rook = pieces.Rook()
-                        if rook.is_valid_move(start_sq, end_sq):
+                        if rook.is_valid_move(start_sq, end_sq, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
                     elif selected_piece[1] == 'P':

@@ -2,6 +2,46 @@
 Pieces classes for creating  objects
 """
 
+from pygame import Color
+
+def check_horizontal_vertical(start_sq, end_sq, board):
+
+    start_row = start_sq[0]
+    start_column = start_sq[1]
+    end_row = end_sq[0]
+    end_column = end_sq[1]
+
+    col = start_column
+    r = start_row
+
+
+    if start_row > end_row:
+        up = end_sq
+        down = start_sq
+    else:
+        up = start_sq
+        down = end_sq
+
+        
+    if start_column > end_column:
+        right = start_sq
+        left = end_sq
+    else:
+        right = end_sq
+        left = start_sq
+
+            
+    for row in range(up[0] + 1, down[0]): 
+        if board[row][col] != '--':
+            return False
+
+    for column in range(left[1] + 1, right[1]):
+        if board[r][column] != '--':
+            return False
+
+    return True
+
+
 class Piece:
     def __init__(self):
         # self.posible_sqs = []
@@ -73,7 +113,7 @@ class Queen:
         self.all_possible_sq = []
 
 
-    def is_valid_move(self, start_sq, end_sq):
+    def is_valid_move(self, start_sq, end_sq, board):
 
         self.start_row = start_sq[0]
         self.start_column = start_sq[1]
@@ -83,32 +123,29 @@ class Queen:
         x_dif = abs(self.end_column - self.start_column)
         y_dif = abs(self.end_row - self.start_row)
 
-        if x_dif == y_dif or x_dif == 0 or y_dif == 0:
+        if x_dif == 0 or y_dif == 0:
+            if check_horizontal_vertical(start_sq, end_sq, board):
+                return True
+
+        elif x_dif == y_dif:
             return True
-        return False
+        
+        else:
+            return False
+
+        # if x_dif == y_dif or x_dif == 0 or y_dif == 0:
+        #     if check_horizontal_vertical(start_sq, end_sq, board):
+        #         return True
+        # else:
+        #     return False
 
         
     def get_all_possible_sq(self, start_sq, board):
-        blocks = []
-        row, column = start_sq
-
         for row in range(8):
             for column in range(8):
                 piece = board[row][column]
-                if self.is_valid_move(start_sq, (row, column)) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
-                    if board[row][column] != "--":
-                        block_sq = (row, column)
-                        blocks.append(block_sq)
-                    self.all_possible_sq.append( (row, column) )
-                
-                ####
-                # for block_sq in blocks:
-                #     if block_sq in self.all_possible_sq:
-                #         for sq in self.all_possible_sq:
-                #             if sq[1] == block_sq[1]:
-                #                 self.all_possible_sq.remove(sq)
-
-
+                if self.is_valid_move(start_sq, (row, column), board) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
+                    self.all_possible_sq.append( (row, column) )   
 
         return self.all_possible_sq
 
@@ -195,28 +232,64 @@ class Rook:
         self.all_possible_sq = []
         
 
-    def is_valid_move(self, start_sq, end_sq):
+    def is_valid_move(self, start_sq, end_sq, board):
 
         self.start_row = start_sq[0]
         self.start_column = start_sq[1]
         self.end_row = end_sq[0]
         self.end_column = end_sq[1]
-
+        color = board[self.start_row][self.start_column][0]
 
         x_dif = abs(self.end_column - self.start_column)
         y_dif = abs(self.end_row - self.start_row)
 
 
-        if x_dif == 0 or y_dif == 0:
-            return True
-        return False
+        if x_dif == 0 or y_dif == 0 :
+            if check_horizontal_vertical(start_sq, end_sq, board):
+########################################### FUNCTION
+            # col = self.start_column
+            # r = self.start_row
+
+
+            # if self.start_row > self.end_row:
+            #     up = end_sq
+            #     down = start_sq
+            # else:
+            #     up = start_sq
+            #     down = end_sq
+
+            
+            # if self.start_column > self.end_column:
+            #     right = start_sq
+            #     left = end_sq
+            # else:
+            #     right = end_sq
+            #     left = start_sq
+
+            
+            # for row in range(up[0] + 1, down[0]): 
+            #     # if (color == 'w' and board[row][col][0] == 'b') or (color == 'b' and board[row][col][0] == 'w'):
+            #     if board[row][col] != '--':
+            #         return False
+
+            # for column in range(left[1] + 1, right[1]):
+            #     if board[r][column] != '--':
+            #         return False
+
+########################################## END FUNCTION
+
+                return True
+
+        else:
+            return False
+
 
 
     def get_all_possible_sq(self, start_sq, board):
         for row in range(8):
             for column in range(8):
                 piece = board[row][column]
-                if self.is_valid_move(start_sq, (row, column)) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
+                if self.is_valid_move(start_sq, (row, column), board) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
                     self.all_possible_sq.append( (row, column) )
 
         return self.all_possible_sq

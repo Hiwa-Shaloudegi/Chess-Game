@@ -2,10 +2,7 @@
 1- Valid moves
 2- Storing all moves
 """
-from pieces import Piece
-
-
-class GameState: # class Game:
+class GameState:
     def __init__(self):
         self.board = [
 
@@ -40,6 +37,9 @@ class GameState: # class Game:
         self.dead_pieces = []
         self.all_moves = []
         self.undo_moves = []
+
+
+
 
 
     def move(self, start_sq, end_sq, piece1, piece2):
@@ -81,6 +81,8 @@ class GameState: # class Game:
             print(message)
 
             self.white_turn = not self.white_turn
+
+
 
 
     def undo(self):
