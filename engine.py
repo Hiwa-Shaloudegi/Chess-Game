@@ -49,6 +49,9 @@ class GameState:
         end_row = end_sq[0]
         end_column = end_sq[1]
         
+        move_info = ()  # move_info: ('w', 'wP', 'bN', (x1, y1), (x2, y2))
+        
+
         if (self.white_turn and piece1[0] == 'w') or (not self.white_turn and piece1[0] == 'b'):
             
             if piece1[0] != piece2[0]:
@@ -56,31 +59,40 @@ class GameState:
                 if piece1 == 'wP' and end_sq[0] == 0:   # white pawn promotion move 
                     self.board[0][end_sq[1]] = "wQ"
                     self.board[start_sq[0]][start_sq[1]] = "--"
+                    move_info = piece1[0], piece1, piece2, start_sq, end_sq
+                    color = 'white'
+                    message = f"White Pawn Promotion:"
 
                     
                 elif piece1 == 'bP' and end_sq[0] == 7: # balck pawn promotion move
                     self.board[7][end_sq[1]] = "bQ"
                     self.board[start_sq[0]][start_sq[1]] = "--"
-            
+                    move_info = piece1[0], piece1, piece2, start_sq, end_sq
+                    color = 'black'
+                    message = f"Black Pawn Promotion:" 
 
+            
                 else:                                   # regular move
                     self.board[start_row][start_column] = "--"
                     self.board[end_row][end_column] = piece1
+                    move_info = piece1[0], piece1, piece2, start_sq, end_sq   
+                    color = "white" if move_info[0] == 'w' else "black"
+                    message = ""
 
 
 
                 if piece2 != "--":
                     self.dead_pieces.append(piece2)
+                    captured_color= "white" if move_info[2][0] == 'w' else "black"
+                    message = message + f"({color} {self.piece_names[move_info[1][1]]} killed {captured_color} {self.piece_names[move_info[2][1]]} <{self.square_names[move_info[3]]} to {self.square_names[move_info[4]]}>)"
 
-            move_info = ()
-            move_info = piece1[0], piece1, piece2, start_sq, end_sq   # move_info: ('w', 'wP', 'bN', (x1, y1), (x2, y2))
-            self.all_moves.append(move_info)
+                else:
+                    message = message + f"({color} {self.piece_names[move_info[1][1]]} moved from <{self.square_names[move_info[3]]} to {self.square_names[move_info[4]]}>)"
 
-            color = "white" if move_info[0] == 'w' else "black"
-            message = f"{color} {self.piece_names[move_info[1][1]]} moved from {self.square_names[move_info[3]]} to {self.square_names[move_info[4]]}"
-            print(message)
 
-            self.white_turn = not self.white_turn
+                self.all_moves.append(move_info)
+                self.white_turn = not self.white_turn
+                print(message)
 
 
 
