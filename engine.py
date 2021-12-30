@@ -59,6 +59,7 @@ class GameState:
                 if piece1 == 'wP' and end_sq[0] == 0:   # white pawn promotion move 
                     self.board[0][end_sq[1]] = "wQ"
                     self.board[start_sq[0]][start_sq[1]] = "--"
+
                     move_info = piece1[0], piece1, piece2, start_sq, end_sq
                     color = 'white'
                     message = f"White Pawn Promotion:"
@@ -67,6 +68,7 @@ class GameState:
                 elif piece1 == 'bP' and end_sq[0] == 7: # balck pawn promotion move
                     self.board[7][end_sq[1]] = "bQ"
                     self.board[start_sq[0]][start_sq[1]] = "--"
+
                     move_info = piece1[0], piece1, piece2, start_sq, end_sq
                     color = 'black'
                     message = f"Black Pawn Promotion:" 
@@ -75,6 +77,7 @@ class GameState:
                 else:                                   # regular move
                     self.board[start_row][start_column] = "--"
                     self.board[end_row][end_column] = piece1
+
                     move_info = piece1[0], piece1, piece2, start_sq, end_sq   
                     color = "white" if move_info[0] == 'w' else "black"
                     message = ""
@@ -99,6 +102,8 @@ class GameState:
 
     def undo(self):
         if len(self.all_moves) != 0:
+            if len(self.dead_pieces) != 0:
+                self.dead_pieces.pop()
 
             last_move = self.all_moves.pop()
             self.undo_moves.append(last_move)

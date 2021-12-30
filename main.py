@@ -130,6 +130,15 @@ def main():
     selected_sq = () # last click of the user (row, column)
     clicks = []      #  [(row1, column1), (row2, column2)]
 
+
+    print("-------------------------------------- WELCOME --------------------------------------")
+    print("1) Press <ctrl+R> for reseting the game")
+    print("2) Press <ctrl+Z> for Undo")
+    print("3) Press <ctrl+Y> for Redo")
+    print("4) Press <ctrl+D> for showing dead pieces")
+    print("Move Log:")
+    print()
+
     running = True
     while running:
         for e in pygame.event.get():
@@ -223,12 +232,20 @@ def main():
                 # ctrl + r -> reset
                 elif e.key == pygame.K_r:
                     gs.reset()
+                
+                elif e.key == pygame.K_d:
+                    for piece in gs.dead_pieces:
+                        color = "white" if piece[0] == 'w' else "black"
+                        dead_piece = gs.piece_names[piece[1]]
+                        message = f"{color} {dead_piece}"
+                        print(f"Dead Pieces: {message}", end=", ")
+                    print()
+                    
             
             
         
                     
 
-                    
 
         # draw_game_state(screen, game_state=gs)
         draw_board(screen, gs)
