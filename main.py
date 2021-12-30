@@ -232,6 +232,13 @@ def main():
                 # ctrl + r -> reset
                 elif e.key == pygame.K_r:
                     gs.reset()
+                    print("-------------------------------------- Game Reseted --------------------------------------")
+                    print("1) Press <ctrl+R> for reseting the game")
+                    print("2) Press <ctrl+Z> for Undo")
+                    print("3) Press <ctrl+Y> for Redo")
+                    print("4) Press <ctrl+D> for showing dead pieces")
+                    print("Move Log:")
+                    print()
                 
                 elif e.key == pygame.K_d:
                     for piece in gs.dead_pieces:
