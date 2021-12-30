@@ -42,6 +42,61 @@ def check_horizontal_vertical(start_sq, end_sq, board):
     return True
 
 
+
+def check_diametrical(start_sq, end_sq, board):
+
+    start_row = start_sq[0]
+    start_column = start_sq[1]
+    end_row = end_sq[0]
+    end_column = end_sq[1]
+
+    if start_row > end_row and start_column > end_column:
+        direction = "up_left"
+    elif start_row < end_row and start_column < end_column :
+        direction = "down_right"
+    
+    if start_row > end_row and start_column < end_column:
+        direction = "up_right"
+    elif start_row < end_row and start_column > end_column:
+        direction = "down_left"
+
+
+    temp = start_sq
+    temp_row = start_sq[0]
+    temp_column = start_sq[1]
+
+    while temp != end_sq:
+        if direction == "up_left":
+            temp_row = temp_row - 1
+            temp_column = temp_column - 1
+            temp = (temp_row, temp_column)
+
+        elif direction == "up_right":
+            temp_row = temp_row - 1
+            temp_column = temp_column + 1
+            temp = (temp_row, temp_column)
+        
+        elif direction == "down_right":
+            temp_row = temp_row + 1
+            temp_column = temp_column + 1
+            temp = (temp_row, temp_column)
+
+        elif direction == "down_left":
+            temp_row = temp_row + 1
+            temp_column = temp_column - 1
+            temp = (temp_row, temp_column)
+        
+        else:
+            pass
+
+        if temp != end_sq and board[temp_row][temp_column] != '--':
+            return False
+
+    
+    return True
+
+
+
 class Piece:
     def __init__(self):
         # self.posible_sqs = []
@@ -128,16 +183,12 @@ class Queen:
                 return True
 
         elif x_dif == y_dif:
-            return True
+            if check_diametrical(start_sq, end_sq, board):
+                return True
         
         else:
             return False
 
-        # if x_dif == y_dif or x_dif == 0 or y_dif == 0:
-        #     if check_horizontal_vertical(start_sq, end_sq, board):
-        #         return True
-        # else:
-        #     return False
 
         
     def get_all_possible_sq(self, start_sq, board):
@@ -158,7 +209,7 @@ class Bishop(Piece):
         # super().__init__()
         self.all_possible_sq = []
 
-    def is_valid_move(self, start_sq, end_sq):
+    def is_valid_move(self, start_sq, end_sq, board):
     
         self.start_row = start_sq[0]
         self.start_column = start_sq[1]
@@ -170,7 +221,8 @@ class Bishop(Piece):
         y_dif = abs(self.end_row - self.start_row)
 
         if x_dif == y_dif:
-            return True
+            if check_diametrical(start_sq, end_sq, board):
+                return True
         return False
 
 
@@ -178,7 +230,7 @@ class Bishop(Piece):
         for row in range(8):
             for column in range(8):
                 piece = board[row][column]
-                if self.is_valid_move(start_sq, (row, column)) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
+                if self.is_valid_move(start_sq, (row, column), board) and piece[0] != board[start_sq[0]][start_sq[1]][0]:
                     self.all_possible_sq.append( (row, column) )
 
         return self.all_possible_sq

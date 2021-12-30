@@ -183,7 +183,7 @@ def main():
 
                     elif selected_piece[1] == 'B':
                         bishop = pieces.Bishop()
-                        if bishop.is_valid_move(start_sq, end_sq):
+                        if bishop.is_valid_move(start_sq, end_sq, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
                     elif selected_piece[1] == 'N':
