@@ -6,8 +6,7 @@ import pieces
 
 
 """
-BLOCK = 100  # size of one space (px)
-WINDOW = BLOCK * 8  # size of board (px)
+BLOCK = 64  # size of one space (px)
 """
 WIDTH = HEIGHT = 512 
 DIMENSION = 8  # 8*8
@@ -151,6 +150,7 @@ def main():
                 column = position[0] // SQ_SIZE
                 row = position[1] // SQ_SIZE
 
+                # if not is_check
                 all_possible_sq = get_all_possible_sq(gs, (row, column))
                 highlight(screen, gs, (row, column), all_possible_sq)
                 pygame.display.flip()
@@ -190,26 +190,114 @@ def main():
                         if queen.is_valid_move(start_sq, end_sq, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
+                            ##### checking CHECK
+                            all_possible_sq = queen.get_all_possible_sq(end_sq, gs.board)
+          
+                            if gs.is_check(all_possible_sq):
+                                if gs.white_turn:
+                                    king_row, king_column = gs.white_king_location
+                                elif not gs.white_turn:
+                                    king_row, king_column = gs.black_king_location
+                                # highlight the selected sq
+                                surface = pygame.Surface((SQ_SIZE, SQ_SIZE))
+                                surface.set_alpha(200) 
+                                surface.fill(pygame.Color("red"))
+                                screen.blit(surface, (king_column*SQ_SIZE, king_row*SQ_SIZE))
+                                pygame.display.flip()
+
+
+                            # gs.white_turn = not gs.white_turn ##
+                            # if gs.white_turn:
+                            #     if gs.black_king_location in all_possible_sq:
+
+
                     elif selected_piece[1] == 'B':
                         bishop = pieces.Bishop()
                         if bishop.is_valid_move(start_sq, end_sq, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+                                                        ##### checking CHECK
+                            all_possible_sq = bishop.get_all_possible_sq(end_sq, gs.board)
+          
+                            if gs.is_check(all_possible_sq):
+                                if gs.white_turn:
+                                    king_row, king_column = gs.white_king_location
+                                elif not gs.white_turn:
+                                    king_row, king_column = gs.black_king_location
+                                # highlight the selected sq
+                                surface = pygame.Surface((SQ_SIZE, SQ_SIZE))
+                                surface.set_alpha(200) 
+                                surface.fill(pygame.Color("red"))
+                                screen.blit(surface, (king_column*SQ_SIZE, king_row*SQ_SIZE))
+                                pygame.display.flip()
+
+
 
                     elif selected_piece[1] == 'N':
                         knight = pieces.Knight()
                         if knight.is_valid_move(start_sq, end_sq):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
 
+                                                        ##### checking CHECK
+                            all_possible_sq = knight.get_all_possible_sq(end_sq, gs.board)
+          
+                            if gs.is_check(all_possible_sq):
+                                if gs.white_turn:
+                                    king_row, king_column = gs.white_king_location
+                                elif not gs.white_turn:
+                                    king_row, king_column = gs.black_king_location
+                                # highlight the selected sq
+                                surface = pygame.Surface((SQ_SIZE, SQ_SIZE))
+                                surface.set_alpha(200) 
+                                surface.fill(pygame.Color("red"))
+                                screen.blit(surface, (king_column*SQ_SIZE, king_row*SQ_SIZE))
+                                pygame.display.flip()
+
+
+
                     elif selected_piece[1] == 'R':
                         rook = pieces.Rook()
                         if rook.is_valid_move(start_sq, end_sq, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+
+                                                        ##### checking CHECK
+                            all_possible_sq = rook.get_all_possible_sq(end_sq, gs.board)
+          
+                            if gs.is_check(all_possible_sq):
+                                if gs.white_turn:
+                                    king_row, king_column = gs.white_king_location
+                                elif not gs.white_turn:
+                                    king_row, king_column = gs.black_king_location
+                                # highlight the selected sq
+                                surface = pygame.Surface((SQ_SIZE, SQ_SIZE))
+                                surface.set_alpha(200) 
+                                surface.fill(pygame.Color("red"))
+                                screen.blit(surface, (king_column*SQ_SIZE, king_row*SQ_SIZE))
+                                pygame.display.flip()
+
+
 
                     elif selected_piece[1] == 'P':
                         pawn = pieces.Pawn()
                         color = selected_piece[0]
                         if pawn.is_valid_move(start_sq, end_sq, color, gs.board):
                             gs.move(start_sq, end_sq, selected_piece, captured_piece)
+
+                                                        ##### checking CHECK
+                            all_possible_sq = pawn.get_all_possible_sq(end_sq, gs.board)
+          
+                            if gs.is_check(all_possible_sq):
+                                if gs.white_turn:
+                                    king_row, king_column = gs.white_king_location
+                                elif not gs.white_turn:
+                                    king_row, king_column = gs.black_king_location
+                                # highlight the selected sq
+                                surface = pygame.Surface((SQ_SIZE, SQ_SIZE))
+                                surface.set_alpha(200) 
+                                surface.fill(pygame.Color("red"))
+                                screen.blit(surface, (king_column*SQ_SIZE, king_row*SQ_SIZE))
+                                pygame.display.flip()
 
                     # else:
                     #     gs.move(start_sq, end_sq, selected_piece, captured_piece)
@@ -241,11 +329,12 @@ def main():
                     print()
                 
                 elif e.key == pygame.K_d:
+                    print("Dead Pieces:", end=" ")
                     for piece in gs.dead_pieces:
                         color = "white" if piece[0] == 'w' else "black"
                         dead_piece = gs.piece_names[piece[1]]
                         message = f"{color} {dead_piece}"
-                        print(f"Dead Pieces: {message}", end=", ")
+                        print(f"{message}", end=", ")
                     print()
                     
             
